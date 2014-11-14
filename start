@@ -41,7 +41,10 @@ main() {
 	set -eo pipefail
 	case "$1" in
 	cmd:run)            shift; cmd-run $@;;
-	*)                  exec /bin/consul agent -config-dir=/config $@;;
+	*)
+		sed -i "s/REPLACE_RECURSOR/${RECURSOR}/" /config/consul.json
+		exec /bin/consul agent -config-dir=/config $@
+	;;
 	esac
 }
 
